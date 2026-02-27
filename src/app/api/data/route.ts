@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { PostgresCompanyRepository, PostgresProjectRepository } from '../../../data/repositories/PostgresRepositories';
+
+export const dynamic = 'force-dynamic';
 import { CompanyRepositoryImpl, ProjectRepositoryImpl } from '../../../data/repositories/MockRepositories';
 
 export async function GET() {

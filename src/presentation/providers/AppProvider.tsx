@@ -22,7 +22,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('/api/data');
+                const response = await fetch('/api/data', { cache: 'no-store' });
                 if (!response.ok) throw new Error('Data fetch failed');
 
                 const data = await response.json();
