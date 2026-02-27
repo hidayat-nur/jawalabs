@@ -3,7 +3,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Project } from '../../core/entities/Project';
 import { CompanyProfile } from '../../core/entities/CompanyProfile';
-import { ProjectRepositoryImpl, CompanyRepositoryImpl } from '../../data/repositories/MockRepositories';
 
 interface AppContextType {
     projects: Project[];
@@ -22,19 +21,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     useEffect(() => {
         const fetchData = async () => {
-            const projectRepo = new ProjectRepositoryImpl();
-            const companyRepo = new CompanyRepositoryImpl();
-
             try {
-                const [allProjects, featured, company] = await Promise.all([
-                    projectRepo.getProjects(),
-                    projectRepo.getFeaturedProjects(),
-                    companyRepo.getCompanyProfile(),
-                ]);
+                const response = await fetch('/api/data');
+                if (!response.ok) throw new Error('Data fetch failed');
 
-                setProjects(allProjects);
-                setFeaturedProjects(featured);
-                setCompanyParams(company);
+                const data = await response.json();
+
+                setProjects(data.projects);
+                setFeaturedProjects(data.featuredProjects);
+                setCompanyParams(data.company);
             } catch (error) {
                 console.error('Failed to load application data', error);
             } finally {
